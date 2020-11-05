@@ -1,0 +1,3 @@
+docker run --rm -v $(pwd)/in:/incoming -v $(pwd)/out:/outgoing                                   \
+        local/pl-mgz2labels mgz2labels.py                                    \
+        /incoming /outgoing
