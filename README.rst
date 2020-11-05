@@ -90,7 +90,7 @@ Build the Docker container:
 
 .. code:: bash
 
-    docker build -t local/pl-mgz2labels .
+    docker build -t local/mgz2labels .
 
 
 Python dependencies can be added to ``setup.py``.
@@ -99,22 +99,20 @@ generating the `requirements.txt` file.
 
 .. code:: bash
 
-    docker run --rm local/pl-mgz2labels -m pip freeze > requirements.txt
-
-
-For the sake of reproducible builds, be sure that ``requirements.txt`` is up to date before you publish your code.
-
-
-.. code:: bash
-
-    git add requirements.txt && git commit -m "Bump requirements.txt" && git push
-
+    docker run --rm -v $(pwd)/in:/incoming -v $(pwd)/out:/outgoing                              \
+        local/mgz2labels mgz2labels.py                                    \
+        /incoming /outgoing
 
 Examples
 --------
 
-Put some examples here!
+.. code:: bash
 
+    docker build -t mgz2labels .
 
-.. image:: https://raw.githubusercontent.com/FNNDSC/cookiecutter-chrisapp/master/doc/assets/badge/light.png
-    :target: https://chrisstore.co
+.. code:: bash
+
+    docker run --rm -v $(pwd)/in:/incoming -v $(pwd)/out:/outgoing                              \
+        local/mgz2labels mgz2labels.py                                    \
+        /incoming /outgoing
+

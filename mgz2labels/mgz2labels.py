@@ -272,3 +272,8 @@ class Mgz2labels(ChrisApp):
         Print the app's man page.
         """
         print(Gstr_synopsis)
+
+
+if __name__ == "__main__":
+    chris_app = Mgz2labels()
+    chris_app.launch()
