@@ -90,7 +90,7 @@ Build the Docker container:
 
 .. code:: bash
 
-    docker build -t local/mgz2labels .
+    docker build -t mgz2labels .
 
 
 Python dependencies can be added to ``setup.py``.
@@ -100,7 +100,7 @@ generating the `requirements.txt` file.
 .. code:: bash
 
     docker run --rm -v $(pwd)/in:/incoming -v $(pwd)/out:/outgoing                              \
-        local/mgz2labels mgz2labels.py                                    \
+        mgz2labels mgz2labels.py                                    \
         /incoming /outgoing
 
 Examples
@@ -113,6 +113,6 @@ Examples
 .. code:: bash
 
     docker run --rm -v $(pwd)/in:/incoming -v $(pwd)/out:/outgoing                              \
-        local/mgz2labels mgz2labels.py                                    \
+        mgz2labels mgz2labels.py                                    \
         /incoming /outgoing
 

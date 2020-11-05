@@ -28,9 +28,15 @@ def create_train_data(options):
     for dirr in sorted(os.listdir(train_data_path)):
         j = 0
         dirr = train_data_path+"/"+dirr
+        if not os.path.isdir(dirr):
+            print('Ignored invalid file: ', dirr)
+            continue
         images = sorted(os.listdir(dirr))
         count = total
         for image_name in images:
+            if not image_name.endswith('.png'):
+                print('Ignored invalid file: ', image_name)
+                continue
             img = imread(os.path.join(dirr, image_name), as_gray=True)
             img = img.astype(np.uint8)
             img = np.array([img])
@@ -101,12 +107,15 @@ def create_mask_data(options, label):
 
     i = 0
     for dirr in sorted(os.listdir(train_data_path)):
+        if not os.path.isdir(train_data_path + dirr):
+            continue
         j = 0
-        dirr = mask_data_path + dirr + '/label-' + str(label)
+        dirr = mask_data_path + dirr + '/label-' + "{:0>3}".format(str(label))
 
         # Label did not exist
         if not os.path.exists(dirr):
-            print('Abandoned: label-', label)
+            print('Not found: ' + dirr)
+            print('Ignored label-' + str(label))
             return
 
         images = sorted(file for file in os.listdir(dirr) if file.endswith('.png'))
@@ -128,8 +137,9 @@ def create_mask_data(options, label):
         imgs_mask[x] = np.append(imgs_mask_temp[x], imgs_mask_temp[x + 1], axis=0)
 
     imgs_mask = preprocess(imgs_mask)
-    np.save(options.outputdir + '/label-' + "{:0>3}".format(str(label + 1)) + '_mask_train.npy', imgs_mask)
-    print('Saving .npy for mask of label ' + "{:0>3}".format(str(label + 1)) + ' Done.')
+    np.save(options.outputdir + '/label-' + "{:0>3}".format(str(label)) + '_mask_train.npy', imgs_mask)
+    print('Size of .npy file: ' + str(imgs_mask.shape))
+    print('Saving .npy for mask of label ' + "{:0>3}".format(str(label)) + ' Done.')
 
 
 def preprocess(imgs):

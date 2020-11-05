@@ -26,9 +26,13 @@ from chrisapp.base import ChrisApp
 
 
 Gstr_title = """
-
-Generate a title from 
-http://patorjk.com/software/taag/#p=display&f=Doom&t=mgz2labels
+ __  __  _____ _________  _               ____  ______ _       _____ 
+|  \/  |/ ____|___  /__ \| |        /\   |  _ \|  ____| |     / ____|
+| \  / | |  __   / /   ) | |       /  \  | |_) | |__  | |    | (___  
+| |\/| | | |_ | / /   / /| |      / /\ \ |  _ <|  __| | |     \___ \ 
+| |  | | |__| |/ /__ / /_| |____ / ____ \| |_) | |____| |____ ____) |
+|_|  |_|\_____/_____|____|______/_/    \_\____/|______|______|_____/ 
+                                                                     
 
 """
 
@@ -99,7 +103,7 @@ class Mgz2labels(ChrisApp):
     """
     MGZ label-wise converter
     """
-    AUTHORS                 = 'BU EC528 F20 Team'
+    AUTHORS                 = 'Tingyi Zhang <tingyi97@bu.edu>'
     SELFPATH                = os.path.dirname(os.path.abspath(__file__))
     SELFEXEC                = os.path.basename(__file__)
     EXECSHELL               = 'python3'
@@ -150,6 +154,8 @@ class Mgz2labels(ChrisApp):
 
         except OSError:
             print("Output folders already exist")
+
+        print(Gstr_title)
         print(os.getcwd())
 
         # Slice the .mgz file to 256 .png files
@@ -183,8 +189,7 @@ class Mgz2labels(ChrisApp):
         dcount = 0
         for label in labels:
             dictionary[dcount] = label
-            dcount = dcount+1
-        print(str(len(dictionary)) + ' labels.')
+            dcount = dcount + 1
 
         # Input data is the ground truth
         if "mask" in output_name:
@@ -197,7 +202,7 @@ class Mgz2labels(ChrisApp):
                 copy_image[copy_image != dictionary[kv]] = 0
                 copy_image[copy_image == dictionary[kv]] = kv
             
-                self.write_to_file(copy_image, output_name + '/label-' + str(kv))
+                self.write_to_file(copy_image, output_name + '/label-' + "{:0>3}".format(str(kv)))
                 print("Processing label: " + str(kv) + ' Done.')
                 print('-' * 30)
 
@@ -242,12 +247,13 @@ class Mgz2labels(ChrisApp):
 
                 # alternate slices and save as png
                 if (slice_counter % 1) == 0:
-                    image_name = inputfile[:-4] + "_z" + "{:0>3}".format(str(current_slice + 1)) + ".png"
+                    image_name = output_name + "_" + "{:0>3}".format(str(current_slice + 1)) + ".png"
                     imageio.imwrite(image_name, data)
 
                     # move images to folder
                     src = image_name
-                    shutil.move(src, outputfile)
+                    shutil.copy(src, outputfile)
+                    os.remove(src)
                     slice_counter += 1
         print('Images saved at: ' + output_name)
 
