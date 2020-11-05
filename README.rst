@@ -19,7 +19,7 @@ MGZ label-wise converter
 Description
 -----------
 
-``mgz2labels`` is a ChRIS-based application that...
+``mgz2labels`` is a ChRIS-based application whose backbone is pl-mgz_converter: https://github.com/FNNDSC/pl-mgz_converter
 
 
 Usage
