@@ -19,7 +19,7 @@ MGZ label-wise converter
 Description
 -----------
 
-``mgz2labels`` is a ChRIS-based application whose backbone is pl-mgz_converter: https://github.com/FNNDSC/pl-mgz_converter
+``mgz2labels`` is a ChRIS-based application whose backbone is [pl-mgz_converter](https://github.com/FNNDSC/pl-mgz_converter). The input file structure is the same as pl-mgz_converter. The output will be 193 labels for each subject in separated folder, and 193 .npy files for each label. The output of this plugin is set to be used for [pl-mricnn](https://github.com/FNNDSC/pl-mricnn) training.
 
 
 Usage
@@ -61,26 +61,6 @@ Arguments
     
     [--version]
     If specified, print version number and exit. 
-
-
-Getting inline help is:
-
-.. code:: bash
-
-    docker run --rm fnndsc/pl-mgz2labels mgz2labels --man
-
-Run
-~~~
-
-You need you need to specify input and output directories using the `-v` flag to `docker run`.
-
-
-.. code:: bash
-
-    docker run --rm -u $(id -u)                             \
-        -v $(pwd)/in:/incoming -v $(pwd)/out:/outgoing      \
-        fnndsc/pl-mgz2labels mgz2labels                        \
-        /incoming /outgoing
 
 
 Development
