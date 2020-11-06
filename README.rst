@@ -19,7 +19,7 @@ MGZ label-wise converter
 Description
 -----------
 
-``mgz2labels`` is a ChRIS-based application whose backbone is pl-mgz_converter:: https://github.com/FNNDSC/pl-mgz_converter. The input file structure is the same as pl-mgz_converter. The output will be 193 labels for each subject in separated folder, and 193 .npy files for each label. The output of this plugin is set to be used for pl-mricnn:: https://github.com/FNNDSC/pl-mricnn training.
+``mgz2labels`` is a ChRIS-based application whose backbone is pl-mgz_converter (https://github.com/FNNDSC/pl-mgz_converter). The input file structure is the same as pl-mgz_converter. The output will be 193 labels for each subject in separated folder, and 193 .npy files for each label. The output of this plugin is set to be used for pl-mricnn (https://github.com/FNNDSC/pl-mricnn) training.
 
 
 Usage
