@@ -58,7 +58,7 @@ def create_train_data(options, labels):
     print('Creating labeled images...')
     print('-' * 30)
 
-    for label in range(11000, 12000):
+    for label in labels:
         create_mask_data(options, label)
     print('Loading all labels done.')
 
@@ -82,8 +82,7 @@ def create_train_data(options, labels):
             if j % (image_depth / 2) == 0:
                 j = 0
                 i += 1
-                if (i % 100) == 0:
-                    print('Done: {0}/{1} mask 3d images'.format(i, count))
+                print('Done: {0}/{1} 3d images'.format(i, count), end='\r')
 
     for x in range(0, imgs_mask_temp.shape[0] - 1):
         imgs_mask[x] = np.append(imgs_mask_temp[x], imgs_mask_temp[x + 1], axis=0)
@@ -126,27 +125,24 @@ def create_mask_data(options, label):
             if j % (image_depth / 2) == 0:
                 j = 0
                 i += 1
-                if (i % 100) == 0:
-                    print('Done: {0}/{1} mask 3d images'.format(i, count))
+                print('Done: {0}/{1} 3d images'.format(i, count), end='\r')
 
     for x in range(0, imgs_mask_temp.shape[0] - 1):
         imgs_mask[x] = np.append(imgs_mask_temp[x], imgs_mask_temp[x + 1], axis=0)
 
     imgs_mask = preprocess(imgs_mask)
-    np.save(options.outputdir + '/label-' + "{:0>3}".format(str(label)) + '_mask_train.npy', imgs_mask)
+    np.save(options.outputdir + '/label-' + "{:0>5}".format(str(label)) + '_mask_train.npy', imgs_mask)
     print('Size of .npy file: ' + str(imgs_mask.shape))
-    print('Saving .npy for mask of label ' + "{:0>3}".format(str(label)) + ' Done.')
+    print('NPY for label ' + "{:0>5}".format(str(label)) + ' saved.')
 
 
 def preprocess(imgs):
     imgs = np.expand_dims(imgs, axis=4)
-    print(' ---------------- preprocessed -----------------')
     return imgs
 
 
 def preprocess_squeeze(imgs):
     imgs = np.squeeze(imgs, axis=4)
-    print(' ---------------- preprocessed squeezed -----------------')
     return imgs
 
 
