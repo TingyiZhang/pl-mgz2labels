@@ -19,7 +19,7 @@ MGZ label-wise converter
 Description
 -----------
 
-``mgz2labels`` is a ChRIS-based application whose backbone is pl-mgz_converter (https://github.com/FNNDSC/pl-mgz_converter). The input file structure is the same as pl-mgz_converter. The output will be 193 labels for each subject in separated folder, and 193 .npy files for each label. The output of this plugin is set to be used for pl-mricnn (https://github.com/FNNDSC/pl-mricnn) training.
+``mgz2labels`` is a ChRIS-based application whose backbone is ``pl-mgz_converter`` (https://github.com/FNNDSC/pl-mgz_converter). The input file structure is the same as pl-mgz_converter. The output will be 193 labels for each subject in separated folder, and 193 .npy files for each label. The output of this plugin is set to be used for ``pl-mricnn`` (https://github.com/FNNDSC/pl-mricnn) training.
 
 
 Usage
@@ -27,13 +27,14 @@ Usage
 
 .. code::
 
-    python mgz2labels.py
-        [-h|--help]
-        [--json] [--man] [--meta]
-        [--savejson <DIR>]
-        [-v|--verbosity <level>]
-        [--version]
-        <inputDir> <outputDir>
+    python3 mgz2labels/mgz2labels.py <inputDir> <outputDir>
+
+
+.. code:: bash
+
+    docker run --rm -v $(pwd)/in:/incoming -v $(pwd)/out:/outgoing                              \
+        mgz2labels mgz2labels.py                                    \
+        /incoming /outgoing
 
 
 Arguments
@@ -96,3 +97,7 @@ Examples
         mgz2labels mgz2labels.py                                    \
         /incoming /outgoing
 
+
+Trouble Shooting
+--------
+Try to remove all ``.DS_Store`` files in the input directory
