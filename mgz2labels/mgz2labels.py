@@ -98,6 +98,9 @@ where necessary.)
         If specified, print version number and exit. 
 """
 
+# A set containing all of the unique labels
+LABEL_SET = {0}
+
 
 class Mgz2labels(ChrisApp):
     """
@@ -161,14 +164,14 @@ class Mgz2labels(ChrisApp):
         # Slice the .mgz file to 256 .png files
         # Preprocess the .png files to create  a giant .npy file for training
         self.convert_to_jpeg(options)
-        self.preprocess(options)
+        self.preprocess(options, LABEL_SET)
 
     """
     Prepare PNG files for training by converting them
     into .npy files
     """
-    def preprocess(self, options):
-        create_train_data(options)
+    def preprocess(self, options, labels):
+        create_train_data(options, labels)
         
     # convert label ranges from 0-255
     def convert_key(self, dictionary, data):
@@ -183,7 +186,7 @@ class Mgz2labels(ChrisApp):
 
         # get all the labels present
         labels = np.unique(new_image.astype(np.uint16))
-
+        LABEL_SET.update(labels)
         # now create a dictionary from the labels
         dictionary = {}
         dcount = 0
@@ -195,15 +198,15 @@ class Mgz2labels(ChrisApp):
         if "mask" in output_name:
             print("Reading masks...")
             for kv in dictionary:
-                print("Processing label: " + str(kv))
+                print("Processing label: " + str(dictionary[kv]))
                 copy_image = np.copy(new_image)
             
                 # Marking one label
                 copy_image[copy_image != dictionary[kv]] = 0
-                copy_image[copy_image == dictionary[kv]] = kv
+                copy_image[copy_image == dictionary[kv]] = 255
             
-                self.write_to_file(copy_image, output_name + '/label-' + "{:0>3}".format(str(kv)))
-                print("Processing label: " + str(kv) + ' Done.')
+                self.write_to_file(copy_image, output_name + '/label-' + "{:0>5}".format(str(dictionary[kv])))
+                print("Processing label: " + str(dictionary[kv]) + ' Done.')
                 print('-' * 30)
 
             print("Processing the whole mask...")
@@ -267,11 +270,13 @@ class Mgz2labels(ChrisApp):
             X_numpy = img.get_fdata()
             y_numpy = img1.get_fdata()
 
+            print('=' * 30)
             print('Processing subject: ' + i)
             # converting nifti to png
             self.convert_nifti_to_png(X_numpy, options.outputdir + "/train/" + i)
             self.convert_nifti_to_png(y_numpy, options.outputdir + "/masks/" + i)
             print('Processing subject: ' + i + ' Done.')
+            print('=' * 30)
 
     def show_man_page(self):
         """

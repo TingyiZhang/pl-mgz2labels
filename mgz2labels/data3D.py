@@ -9,7 +9,7 @@ image_cols = int(256)
 image_depth = 16
 
 
-def create_train_data(options):
+def create_train_data(options, labels):
     train_data_path = options.outputdir+"/train/"
     mask_data_path = options.outputdir+'/masks/'
     dirs = os.listdir(train_data_path)
@@ -29,7 +29,6 @@ def create_train_data(options):
         j = 0
         dirr = train_data_path+"/"+dirr
         if not os.path.isdir(dirr):
-            print('Ignored invalid file: ', dirr)
             continue
         images = sorted(os.listdir(dirr))
         count = total
@@ -45,8 +44,7 @@ def create_train_data(options):
             if j % (image_depth/2) == 0:
                 j = 0
                 i += 1
-                if (i % 100) == 0:
-                    print('Done: {0}/{1} 3d images'.format(i, count))
+                print('Done: {0}/{1} 3d images'.format(i, count), end='\r')
 
     for x in range(0, imgs_temp.shape[0]-1):
         imgs[x] = np.append(imgs_temp[x], imgs_temp[x+1], axis=0)
@@ -54,14 +52,13 @@ def create_train_data(options):
     print('Loading of train data done.')
     imgs = preprocess(imgs)
     np.save(options.outputdir+'/imgs_train.npy', imgs)
+    print('Training NPY saved at: ' + options.outputdir + '/imgs_train.npy')
 
     print('-' * 30)
     print('Creating labeled images...')
     print('-' * 30)
 
-    # There are 193 labels at most, create a .npy file for each of them
-    num_of_labels = 193
-    for label in range(num_of_labels):
+    for label in range(11000, 12000):
         create_mask_data(options, label)
     print('Loading all labels done.')
 
@@ -106,18 +103,17 @@ def create_mask_data(options, label):
     imgs_mask_temp = np.ndarray((total, image_depth//2, image_rows, image_cols), dtype=np.uint8)
 
     i = 0
+    print('-' * 30)
+    print('Processing label ' + str(label))
     for dirr in sorted(os.listdir(train_data_path)):
         if not os.path.isdir(train_data_path + dirr):
             continue
         j = 0
-        dirr = mask_data_path + dirr + '/label-' + "{:0>3}".format(str(label))
+        dirr = mask_data_path + dirr + '/label-' + "{:0>5}".format(str(label))
 
         # Label did not exist
         if not os.path.exists(dirr):
-            print('Not found: ' + dirr)
-            print('Ignored label-' + str(label))
             return
-
         images = sorted(file for file in os.listdir(dirr) if file.endswith('.png'))
         count = total
         for mask_name in images:
