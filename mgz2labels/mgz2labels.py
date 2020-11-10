@@ -164,6 +164,7 @@ class Mgz2labels(ChrisApp):
         # Preprocess the .png files to create  a giant .npy file for training
         self.convert_to_jpeg(options)
         self.preprocess(options, LABEL_SET)
+        print('Finished.')
 
     """
     Prepare PNG files for training by converting them
@@ -273,6 +274,7 @@ class Mgz2labels(ChrisApp):
             print('Creating train images...', end='\r')
             self.convert_nifti_to_png(X_numpy, options.outputdir + "/train/" + i)
             print('Creating train images done.')
+
             print('Creating mask images...')
             self.convert_nifti_to_png(y_numpy, options.outputdir + "/masks/" + i)
             print('Processing subject: ' + i + ' done.')
