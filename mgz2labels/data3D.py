@@ -15,11 +15,11 @@ def create_train_data(options, labels):
     dirs = os.listdir(train_data_path)
     total = int(len(dirs)*16*2)
 
-    imgs = np.ndarray((total, image_depth, image_rows, image_cols), dtype=np.uint8)
-    imgs_mask = np.ndarray((total, image_depth, image_rows, image_cols), dtype=np.uint8)
+    imgs = np.ndarray((total, image_depth, image_rows, image_cols), dtype=np.uint16)
+    imgs_mask = np.ndarray((total, image_depth, image_rows, image_cols), dtype=np.uint16)
 
-    imgs_temp = np.ndarray((total, image_depth//2, image_rows, image_cols), dtype=np.uint8)
-    imgs_mask_temp = np.ndarray((total, image_depth//2, image_rows, image_cols), dtype=np.uint8)
+    imgs_temp = np.ndarray((total, image_depth//2, image_rows, image_cols), dtype=np.uint16)
+    imgs_mask_temp = np.ndarray((total, image_depth//2, image_rows, image_cols), dtype=np.uint16)
 
     i = 0
     print('-'*30)
@@ -58,8 +58,8 @@ def create_train_data(options, labels):
     print('Creating labeled images...')
     print('-' * 30)
 
-    for label in labels:
-        create_mask_data(options, label)
+    # for label in labels:
+    #     create_mask_data(options, label)
     print('Loading all labels done.')
 
     # Convert the whole volume to .npy
@@ -69,6 +69,7 @@ def create_train_data(options, labels):
         j = 0
         dirr = mask_data_path + dirr + '/whole'
         if not os.path.exists(dirr):
+            print(dirr)
             return
         images = sorted(file for file in os.listdir(dirr) if file.endswith('.png'))
         count = total
@@ -98,8 +99,8 @@ def create_mask_data(options, label):
     dirs = os.listdir(train_data_path)
     total = int(len(dirs)*16*2)
 
-    imgs_mask = np.ndarray((total, image_depth, image_rows, image_cols), dtype=np.uint8)
-    imgs_mask_temp = np.ndarray((total, image_depth//2, image_rows, image_cols), dtype=np.uint8)
+    imgs_mask = np.ndarray((total, image_depth, image_rows, image_cols), dtype=np.uint16)
+    imgs_mask_temp = np.ndarray((total, image_depth//2, image_rows, image_cols), dtype=np.uint16)
 
     i = 0
     print('-' * 30)
