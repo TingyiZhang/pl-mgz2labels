@@ -196,17 +196,17 @@ class Mgz2labels(ChrisApp):
 
         # Input data is the ground truth
         if "mask" in output_name:
-            num_of_labels = len(LUT)
-            for label in labels:
-                print("Processing labels: {0}/{1}".format(label, num_of_labels), end='\r')
-                copy_image = np.copy(new_image)
-
-                # Marking one label
-                copy_image[copy_image != label] = 0
-                copy_image[copy_image == label] = 255
-
-                self.write_to_file(copy_image, output_name + '/label-' + "{:0>5}".format(str(label)))
-            print('Processing labels done.')
+            # num_of_labels = len(LUT)
+            # for label in labels:
+            #     print("Processing labels: {0}/{1}".format(label, num_of_labels), end='\r')
+            #     copy_image = np.copy(new_image)
+            #
+            #     # Marking one label
+            #     copy_image[copy_image != label] = 0
+            #     copy_image[copy_image == label] = 255
+            #
+            #     self.write_to_file(copy_image, output_name + '/label-' + "{:0>5}".format(str(label)))
+            # print('Processing labels done.')
 
             print("Processing the whole mask...", end='\r')
             for label in labels:
